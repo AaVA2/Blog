@@ -1,5 +1,4 @@
 from ct import blog
-from models.authors_register import AuthorModel
 
 
 class CommentModel(blog.Model):
@@ -8,10 +7,9 @@ class CommentModel(blog.Model):
     id = blog.Column(blog.Integer, primary_key=True)
     comment = blog.Column(blog.String(500))
 
-    comment_author = blog.relationship(AuthorModel, lazy='dynamic')
+    ca = blog.relationship('AuthorModel')
     comment_author_id = blog.Column(blog.Integer, blog.ForeignKey('authors.id'))
     post_id = blog.Column(blog.Integer, blog.ForeignKey('posts.id'))
-
 
     def __init__(self, author_id, post_id, comment):
         self.comment_author_id = author_id
@@ -19,7 +17,8 @@ class CommentModel(blog.Model):
         self.comment = comment
 
     def json(self):
-        return {'comment_id': self.id, 'comment': self.comment, 'comment_author': self.comment_author.all()}
+        return {'comment_id': self.id, 'comment': self.comment,
+                'comment_author': self.ca.author}
 
     def save_to_blog(self):
         blog.session.add(self)

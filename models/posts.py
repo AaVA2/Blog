@@ -1,5 +1,4 @@
 from ct import blog
-from models.comments import CommentModel
 
 
 class PostModel(blog.Model):
@@ -19,8 +18,6 @@ class PostModel(blog.Model):
         return {'post_id': self.id, 'post': self.post,
                 'post_author_id': self.post_author_id,
                  'comments': [x.json() for x in self.comments.all()]}
-                    # 'comments': list(map(lambda x: x.json(), CommentModel.query.all()))}
-
 
     def save_to_blog(self):
         blog.session.add(self)

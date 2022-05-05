@@ -9,10 +9,8 @@ class Post(Resource):
     parser.add_argument('author_id', type=int, required=True)
     parser.add_argument('post', type=str, required=True)
 
-
     def get(self):
         return {'posts': list(map(lambda x: x.json(), PostModel.query.all()))}
-
 
     def post(self):
         data = Post.parser.parse_args()
